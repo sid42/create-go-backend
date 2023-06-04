@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+    db:
+        image: postgres
+        container_name: db
+        environment:
+            - POSTGRES_USER=postgres  
+            - POSTGRES_PASSWORD= {{ db_password }}         
+        expose:
+            - 5432
+        volumes:
+            - ./db_init.sql:/docker-entrypoint-initdb.d/db_init.sql
+
+    server:
+        container_name: {{ app_name }}
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        command: bash -c "go build -o backend && ./backend"
+        ports: 
+            - '8000:8000'
+        depends_on: 
+            - db
+        environment: 
+            - DB_USER=postgres
+            - DB_NAME=postgres
+            - DB_HOST=db
+            - DB_PORT=5432
+            - DB_PASSWORD=very_secret_db_password
+        stdin_open: true
+volumes:
+    db:  

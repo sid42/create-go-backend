@@ -1,0 +1,2 @@
+# create-go-backend
+Rust tool to scaffold Golang backend server. Exposes `/login` and `/signup` HTTP endpoints to process user information using JWT for authentication in middleware. Spins up dockerized Postgres instance, great for personal projects.   
